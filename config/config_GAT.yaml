@@ -1,0 +1,36 @@
+model:
+  input_dim: 1536         # Match text-embedding-3-small dimension
+  hidden_channels: [1024, 1020] # encoder dim, n-hop dim, tuning
+  embedding_dim: 768      # Final embedding dimension, tuning
+  num_heads: 12            # Number of attention heads
+  dropout: 0.2            # dropout for text-type initial embedding
+  residual: true          # residual connection, alwas true
+  temperature: 0.07        # sharpness of embedding similarities
+  enable_drop: true       # Randomly drop connections during training
+  drop_rate: 0.1          # Drop rate for connection dropping
+
+training:
+  learning_rate: 0.000015
+  weight_decay: 0.0003
+  batch_size: 256
+  max_pos_samples: 16
+  max_neg_samples: 48     # 3:1 negative to positive ratio
+  num_epochs: 1000
+  early_stopping_patience: 100
+  margin: 1.2
+  checkpoint_dir: "checkpoints"
+  resume_training: true
+  log_dir: "logs"
+  scheduler:
+    type: "cosine_warm_restarts"  # Type of scheduler to use
+    T_0: 10                       # Number of epochs for first restart
+    T_mult: 2                     # Multiplier for increasing cycle length after restart
+    eta_min: 0.000001             # Minimum learning rate
+  gradient_clipping:
+    enabled: false                # only use when gpu memory is limited
+    max_norm: 1.0
+
+data:
+  data_dir: "data_source"
+  auto_download: true    # Automatically check for and download newer data
+  force_update: false    # Force update even if data already exists

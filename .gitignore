@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# jetBrains
+.idea/
+
+# vs code
+.vscode/
+
+# *.log
+*.pyc
+*.pt
+/data_source/*.json
+/checkpoints
+
+# venv
+venv/
+
+.env
+
+

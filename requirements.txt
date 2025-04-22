@@ -1,0 +1,17 @@
+--find-links https://pytorch-geometric.com/whl/torch-2.1.0+cu121.html
+torch==2.1.0
+torchvision
+torchaudio
+torch-geometric
+torch-scatter==2.1.2
+torch-sparse==0.6.18
+torch-cluster==1.6.3
+numpy==1.24.3
+networkx>=3.1
+tqdm>=4.65.0
+PyYAML>=6.0.1
+GPUtil>=1.4.0
+tensorboard
+dotenv
+pymongo
+azure

@@ -1,0 +1,207 @@
+2025-04-14 06:15:39,508 - utils.gpu_utils - INFO - Found 1 GPU(s)
+2025-04-14 06:15:39,511 - utils.gpu_utils - INFO - GPU 0: NVIDIA H100 NVL
+2025-04-14 06:15:39,512 - utils.gpu_utils - INFO - Using GPU: NVIDIA H100 NVL
+2025-04-14 06:15:39,512 - __main__ - INFO - Using device: cuda
+2025-04-14 06:15:39,800 - __main__ - INFO - Initialized OutfitGTN model with 21667426 parameters
+2025-04-14 06:15:39,982 - __main__ - INFO - Initialized CosineAnnealingWarmRestarts scheduler
+Checking for latest data in blob storage...
+2025-04-14 06:15:39,983 - data_downloader - INFO - Connecting to Azure Blob Storage...
+2025-04-14 06:15:39,986 - data_downloader - INFO - Finding latest graph file...
+2025-04-14 06:15:40,993 - data_downloader - INFO - Finding latest dataset file...
+2025-04-14 06:15:41,212 - data_downloader - INFO - Using existing graph version: graph_2025-04-12_19-53-08.json
+2025-04-14 06:15:41,212 - data_downloader - INFO - Using existing dataset version: dataset_2025-04-14_08-06-24.json
+2025-04-14 06:15:41,213 - data_downloader - INFO - Updated data version metadata
+2025-04-14 06:15:41,213 - data_downloader - INFO - Using graph file: data_source/graph_2025-04-12_19-53-08.json
+2025-04-14 06:15:41,213 - data_downloader - INFO - Using dataset file: data_source/dataset_2025-04-14_08-06-24.json
+Using data files:
+  - Graph: data_source/graph_2025-04-12_19-53-08.json
+  - Dataset: data_source/dataset_2025-04-14_08-06-24.json
+
+=== Training Dataset Statistics ===
+Total nodes in graph: 108279
+Nodes with valid samples (pos+neg): 86373
+
+=== Validation Dataset Statistics ===
+Total nodes in graph: 108279
+Nodes with valid samples (pos+neg): 21594
+2025-04-14 06:16:53,901 - __main__ - INFO - No checkpoint found. Starting training from scratch.
+2025-04-14 06:19:56,306 - __main__ - INFO - Epoch 0: Train Loss = 1.0577, Val Loss = 1.1012, Pos Sim = 0.6291, Neg Sim = 0.6129
+2025-04-14 06:19:56,307 - __main__ - INFO - Learning rate: 0.00001462
+2025-04-14 06:19:57,223 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:23:01,548 - __main__ - INFO - Epoch 1: Train Loss = 1.0253, Val Loss = 1.0808, Pos Sim = 0.6033, Neg Sim = 0.5728
+2025-04-14 06:23:01,551 - __main__ - INFO - Learning rate: 0.00001354
+2025-04-14 06:23:02,467 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:26:06,229 - __main__ - INFO - Epoch 2: Train Loss = 1.0231, Val Loss = 1.0725, Pos Sim = 0.5903, Neg Sim = 0.5553
+2025-04-14 06:26:06,234 - __main__ - INFO - Learning rate: 0.00001191
+2025-04-14 06:26:07,226 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:29:08,505 - __main__ - INFO - Epoch 3: Train Loss = 1.0140, Val Loss = 1.0414, Pos Sim = 0.5899, Neg Sim = 0.5468
+2025-04-14 06:29:08,507 - __main__ - INFO - Learning rate: 0.00001000
+2025-04-14 06:29:09,421 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:32:14,745 - __main__ - INFO - Epoch 4: Train Loss = 0.9934, Val Loss = 0.9954, Pos Sim = 0.5661, Neg Sim = 0.4978
+2025-04-14 06:32:14,747 - __main__ - INFO - Learning rate: 0.00000809
+2025-04-14 06:32:15,737 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:35:18,921 - __main__ - INFO - Epoch 5: Train Loss = 0.9682, Val Loss = 0.9575, Pos Sim = 0.5138, Neg Sim = 0.3998
+2025-04-14 06:35:18,923 - __main__ - INFO - Learning rate: 0.00000646
+2025-04-14 06:35:19,798 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:38:24,398 - __main__ - INFO - Epoch 6: Train Loss = 0.9728, Val Loss = 0.9656, Pos Sim = 0.5223, Neg Sim = 0.3982
+2025-04-14 06:38:24,399 - __main__ - INFO - Learning rate: 0.00000538
+2025-04-14 06:41:24,602 - __main__ - INFO - Epoch 7: Train Loss = 0.9569, Val Loss = 0.9137, Pos Sim = 0.5151, Neg Sim = 0.3694
+2025-04-14 06:41:24,610 - __main__ - INFO - Learning rate: 0.00001500
+2025-04-14 06:41:25,613 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:44:27,199 - __main__ - INFO - Epoch 8: Train Loss = 0.9328, Val Loss = 0.9136, Pos Sim = 0.4227, Neg Sim = 0.1982
+2025-04-14 06:44:27,201 - __main__ - INFO - Learning rate: 0.00001490
+2025-04-14 06:44:28,172 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:47:29,317 - __main__ - INFO - Epoch 9: Train Loss = 0.9054, Val Loss = 0.9084, Pos Sim = 0.4753, Neg Sim = 0.2134
+2025-04-14 06:47:29,319 - __main__ - INFO - Learning rate: 0.00001462
+2025-04-14 06:47:30,292 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:50:39,705 - __main__ - INFO - Epoch 10: Train Loss = 0.9092, Val Loss = 0.9016, Pos Sim = 0.4857, Neg Sim = 0.2421
+2025-04-14 06:50:39,707 - __main__ - INFO - Learning rate: 0.00001416
+2025-04-14 06:50:40,683 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:53:42,985 - __main__ - INFO - Epoch 11: Train Loss = 0.8642, Val Loss = 0.9128, Pos Sim = 0.4588, Neg Sim = 0.1337
+2025-04-14 06:53:42,986 - __main__ - INFO - Learning rate: 0.00001354
+2025-04-14 06:56:53,569 - __main__ - INFO - Epoch 12: Train Loss = 0.8977, Val Loss = 0.8879, Pos Sim = 0.4342, Neg Sim = 0.1406
+2025-04-14 06:56:53,571 - __main__ - INFO - Learning rate: 0.00001278
+2025-04-14 06:56:54,492 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 06:59:55,170 - __main__ - INFO - Epoch 13: Train Loss = 0.9019, Val Loss = 0.8693, Pos Sim = 0.4985, Neg Sim = 0.2300
+2025-04-14 06:59:55,172 - __main__ - INFO - Learning rate: 0.00001191
+2025-04-14 06:59:56,107 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 07:02:59,101 - __main__ - INFO - Epoch 14: Train Loss = 0.9022, Val Loss = 0.8712, Pos Sim = 0.4637, Neg Sim = 0.1971
+2025-04-14 07:02:59,103 - __main__ - INFO - Learning rate: 0.00001098
+2025-04-14 07:06:00,969 - __main__ - INFO - Epoch 15: Train Loss = 0.8572, Val Loss = 0.8541, Pos Sim = 0.4902, Neg Sim = 0.1944
+2025-04-14 07:06:00,975 - __main__ - INFO - Learning rate: 0.00001000
+2025-04-14 07:06:01,955 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 07:09:03,159 - __main__ - INFO - Epoch 16: Train Loss = 0.8670, Val Loss = 0.8727, Pos Sim = 0.4656, Neg Sim = 0.1659
+2025-04-14 07:09:03,161 - __main__ - INFO - Learning rate: 0.00000902
+2025-04-14 07:12:06,310 - __main__ - INFO - Epoch 17: Train Loss = 0.8718, Val Loss = 0.8885, Pos Sim = 0.4599, Neg Sim = 0.1588
+2025-04-14 07:12:06,312 - __main__ - INFO - Learning rate: 0.00000809
+2025-04-14 07:15:06,669 - __main__ - INFO - Epoch 18: Train Loss = 0.8593, Val Loss = 0.8393, Pos Sim = 0.4432, Neg Sim = 0.1385
+2025-04-14 07:15:06,670 - __main__ - INFO - Learning rate: 0.00000722
+2025-04-14 07:15:07,617 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 07:18:08,271 - __main__ - INFO - Epoch 19: Train Loss = 0.8360, Val Loss = 0.8442, Pos Sim = 0.4826, Neg Sim = 0.1604
+2025-04-14 07:18:08,274 - __main__ - INFO - Learning rate: 0.00000646
+2025-04-14 07:21:11,619 - __main__ - INFO - Epoch 20: Train Loss = 0.8670, Val Loss = 0.8441, Pos Sim = 0.4831, Neg Sim = 0.1730
+2025-04-14 07:21:11,620 - __main__ - INFO - Learning rate: 0.00000584
+2025-04-14 07:24:16,610 - __main__ - INFO - Epoch 21: Train Loss = 0.8204, Val Loss = 0.8503, Pos Sim = 0.4889, Neg Sim = 0.1329
+2025-04-14 07:24:16,613 - __main__ - INFO - Learning rate: 0.00000538
+2025-04-14 07:27:24,754 - __main__ - INFO - Epoch 22: Train Loss = 0.8511, Val Loss = 0.8783, Pos Sim = 0.4792, Neg Sim = 0.1605
+2025-04-14 07:27:24,756 - __main__ - INFO - Learning rate: 0.00000510
+2025-04-14 07:30:22,208 - __main__ - INFO - Epoch 23: Train Loss = 0.8200, Val Loss = 0.8516, Pos Sim = 0.4781, Neg Sim = 0.1292
+2025-04-14 07:30:22,209 - __main__ - INFO - Learning rate: 0.00001500
+2025-04-14 07:33:24,715 - __main__ - INFO - Epoch 24: Train Loss = 0.8431, Val Loss = 0.9254, Pos Sim = 0.5134, Neg Sim = 0.1799
+2025-04-14 07:33:24,716 - __main__ - INFO - Learning rate: 0.00001498
+2025-04-14 07:36:25,557 - __main__ - INFO - Epoch 25: Train Loss = 0.8224, Val Loss = 0.8727, Pos Sim = 0.4635, Neg Sim = 0.0869
+2025-04-14 07:36:25,559 - __main__ - INFO - Learning rate: 0.00001490
+2025-04-14 07:39:26,715 - __main__ - INFO - Epoch 26: Train Loss = 0.8615, Val Loss = 0.8931, Pos Sim = 0.4768, Neg Sim = 0.1434
+2025-04-14 07:39:26,717 - __main__ - INFO - Learning rate: 0.00001478
+2025-04-14 07:42:31,958 - __main__ - INFO - Epoch 27: Train Loss = 0.8659, Val Loss = 0.8625, Pos Sim = 0.4655, Neg Sim = 0.1432
+2025-04-14 07:42:31,959 - __main__ - INFO - Learning rate: 0.00001462
+2025-04-14 07:45:35,620 - __main__ - INFO - Epoch 28: Train Loss = 0.8863, Val Loss = 0.9056, Pos Sim = 0.4866, Neg Sim = 0.1982
+2025-04-14 07:45:35,624 - __main__ - INFO - Learning rate: 0.00001441
+2025-04-14 07:48:37,057 - __main__ - INFO - Epoch 29: Train Loss = 0.8474, Val Loss = 0.8477, Pos Sim = 0.5254, Neg Sim = 0.1891
+2025-04-14 07:48:37,060 - __main__ - INFO - Learning rate: 0.00001416
+2025-04-14 07:51:43,801 - __main__ - INFO - Epoch 30: Train Loss = 0.8291, Val Loss = 0.8711, Pos Sim = 0.5030, Neg Sim = 0.1561
+2025-04-14 07:51:43,803 - __main__ - INFO - Learning rate: 0.00001387
+2025-04-14 07:54:46,894 - __main__ - INFO - Epoch 31: Train Loss = 0.8622, Val Loss = 0.8926, Pos Sim = 0.4778, Neg Sim = 0.1638
+2025-04-14 07:54:46,896 - __main__ - INFO - Learning rate: 0.00001354
+2025-04-14 07:57:51,236 - __main__ - INFO - Epoch 32: Train Loss = 0.8571, Val Loss = 0.8211, Pos Sim = 0.4678, Neg Sim = 0.1613
+2025-04-14 07:57:51,237 - __main__ - INFO - Learning rate: 0.00001317
+2025-04-14 07:57:52,153 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 08:00:56,415 - __main__ - INFO - Epoch 33: Train Loss = 0.8573, Val Loss = 0.8283, Pos Sim = 0.4468, Neg Sim = 0.1352
+2025-04-14 08:00:56,416 - __main__ - INFO - Learning rate: 0.00001278
+2025-04-14 08:03:59,955 - __main__ - INFO - Epoch 34: Train Loss = 0.8250, Val Loss = 0.8333, Pos Sim = 0.4722, Neg Sim = 0.1045
+2025-04-14 08:03:59,957 - __main__ - INFO - Learning rate: 0.00001236
+2025-04-14 08:07:06,445 - __main__ - INFO - Epoch 35: Train Loss = 0.8560, Val Loss = 0.8502, Pos Sim = 0.4490, Neg Sim = 0.1138
+2025-04-14 08:07:06,447 - __main__ - INFO - Learning rate: 0.00001191
+2025-04-14 08:10:08,715 - __main__ - INFO - Epoch 36: Train Loss = 0.8276, Val Loss = 0.8693, Pos Sim = 0.4572, Neg Sim = 0.0973
+2025-04-14 08:10:08,716 - __main__ - INFO - Learning rate: 0.00001145
+2025-04-14 08:13:14,318 - __main__ - INFO - Epoch 37: Train Loss = 0.8444, Val Loss = 0.8678, Pos Sim = 0.5077, Neg Sim = 0.1622
+2025-04-14 08:13:14,322 - __main__ - INFO - Learning rate: 0.00001098
+2025-04-14 08:16:15,210 - __main__ - INFO - Epoch 38: Train Loss = 0.8187, Val Loss = 0.8397, Pos Sim = 0.4918, Neg Sim = 0.1356
+2025-04-14 08:16:15,212 - __main__ - INFO - Learning rate: 0.00001049
+2025-04-14 08:19:15,815 - __main__ - INFO - Epoch 39: Train Loss = 0.8560, Val Loss = 0.8569, Pos Sim = 0.4680, Neg Sim = 0.1467
+2025-04-14 08:19:15,817 - __main__ - INFO - Learning rate: 0.00001000
+2025-04-14 08:22:11,530 - __main__ - INFO - Epoch 40: Train Loss = 0.8284, Val Loss = 0.8609, Pos Sim = 0.4736, Neg Sim = 0.1487
+2025-04-14 08:22:11,531 - __main__ - INFO - Learning rate: 0.00000951
+2025-04-14 08:25:08,568 - __main__ - INFO - Epoch 41: Train Loss = 0.8162, Val Loss = 0.8090, Pos Sim = 0.4882, Neg Sim = 0.1298
+2025-04-14 08:25:08,570 - __main__ - INFO - Learning rate: 0.00000902
+2025-04-14 08:25:09,446 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 08:28:12,646 - __main__ - INFO - Epoch 42: Train Loss = 0.8330, Val Loss = 0.8260, Pos Sim = 0.4693, Neg Sim = 0.1291
+2025-04-14 08:28:12,648 - __main__ - INFO - Learning rate: 0.00000855
+2025-04-14 08:31:16,891 - __main__ - INFO - Epoch 43: Train Loss = 0.8208, Val Loss = 0.8319, Pos Sim = 0.4715, Neg Sim = 0.1101
+2025-04-14 08:31:16,893 - __main__ - INFO - Learning rate: 0.00000809
+2025-04-14 08:34:14,834 - __main__ - INFO - Epoch 44: Train Loss = 0.8092, Val Loss = 0.8132, Pos Sim = 0.5033, Neg Sim = 0.1480
+2025-04-14 08:34:14,836 - __main__ - INFO - Learning rate: 0.00000764
+2025-04-14 08:37:14,545 - __main__ - INFO - Epoch 45: Train Loss = 0.8445, Val Loss = 0.8413, Pos Sim = 0.4564, Neg Sim = 0.1247
+2025-04-14 08:37:14,548 - __main__ - INFO - Learning rate: 0.00000722
+2025-04-14 08:40:16,519 - __main__ - INFO - Epoch 46: Train Loss = 0.8246, Val Loss = 0.8421, Pos Sim = 0.5023, Neg Sim = 0.1688
+2025-04-14 08:40:16,521 - __main__ - INFO - Learning rate: 0.00000683
+2025-04-14 08:43:13,036 - __main__ - INFO - Epoch 47: Train Loss = 0.8146, Val Loss = 0.8428, Pos Sim = 0.4949, Neg Sim = 0.1461
+2025-04-14 08:43:13,039 - __main__ - INFO - Learning rate: 0.00000646
+2025-04-14 08:46:14,521 - __main__ - INFO - Epoch 48: Train Loss = 0.8059, Val Loss = 0.7796, Pos Sim = 0.4661, Neg Sim = 0.1022
+2025-04-14 08:46:14,527 - __main__ - INFO - Learning rate: 0.00000613
+2025-04-14 08:46:15,514 - trainers.trainer - INFO - Saved checkpoint to checkpoints/best_model_GTN.pt
+2025-04-14 08:49:26,914 - __main__ - INFO - Epoch 49: Train Loss = 0.8073, Val Loss = 0.8176, Pos Sim = 0.4853, Neg Sim = 0.1335
+2025-04-14 08:49:26,916 - __main__ - INFO - Learning rate: 0.00000584
+2025-04-14 08:52:24,975 - __main__ - INFO - Epoch 50: Train Loss = 0.7980, Val Loss = 0.8151, Pos Sim = 0.5237, Neg Sim = 0.1560
+2025-04-14 08:52:24,977 - __main__ - INFO - Learning rate: 0.00000559
+2025-04-14 08:55:26,662 - __main__ - INFO - Epoch 51: Train Loss = 0.8251, Val Loss = 0.8243, Pos Sim = 0.5154, Neg Sim = 0.1704
+2025-04-14 08:55:26,663 - __main__ - INFO - Learning rate: 0.00000538
+2025-04-14 08:58:27,276 - __main__ - INFO - Epoch 52: Train Loss = 0.8141, Val Loss = 0.8138, Pos Sim = 0.4941, Neg Sim = 0.1441
+2025-04-14 08:58:27,277 - __main__ - INFO - Learning rate: 0.00000522
+2025-04-14 09:01:25,845 - __main__ - INFO - Epoch 53: Train Loss = 0.8063, Val Loss = 0.8036, Pos Sim = 0.4670, Neg Sim = 0.1116
+2025-04-14 09:01:25,849 - __main__ - INFO - Learning rate: 0.00000510
+2025-04-14 09:04:30,499 - __main__ - INFO - Epoch 54: Train Loss = 0.7991, Val Loss = 0.7931, Pos Sim = 0.4893, Neg Sim = 0.1149
+2025-04-14 09:04:30,502 - __main__ - INFO - Learning rate: 0.00000502
+2025-04-14 09:07:20,510 - __main__ - INFO - Epoch 55: Train Loss = 0.8252, Val Loss = 0.7853, Pos Sim = 0.5036, Neg Sim = 0.1635
+2025-04-14 09:07:20,512 - __main__ - INFO - Learning rate: 0.00001500
+2025-04-14 09:10:18,893 - __main__ - INFO - Epoch 56: Train Loss = 0.8728, Val Loss = 0.8653, Pos Sim = 0.4699, Neg Sim = 0.1824
+2025-04-14 09:10:18,895 - __main__ - INFO - Learning rate: 0.00001499
+2025-04-14 09:13:22,891 - __main__ - INFO - Epoch 57: Train Loss = 0.8560, Val Loss = 0.8257, Pos Sim = 0.5543, Neg Sim = 0.2495
+2025-04-14 09:13:22,892 - __main__ - INFO - Learning rate: 0.00001498
+2025-04-14 09:16:22,287 - __main__ - INFO - Epoch 58: Train Loss = 0.8209, Val Loss = 0.8019, Pos Sim = 0.4834, Neg Sim = 0.1284
+2025-04-14 09:16:22,288 - __main__ - INFO - Learning rate: 0.00001495
+2025-04-14 09:19:31,302 - __main__ - INFO - Epoch 59: Train Loss = 0.8353, Val Loss = 0.8644, Pos Sim = 0.4520, Neg Sim = 0.1008
+2025-04-14 09:19:31,306 - __main__ - INFO - Learning rate: 0.00001490
+2025-04-14 09:22:35,250 - __main__ - INFO - Epoch 60: Train Loss = 0.8159, Val Loss = 0.8010, Pos Sim = 0.4971, Neg Sim = 0.1299
+2025-04-14 09:22:35,252 - __main__ - INFO - Learning rate: 0.00001485
+2025-04-14 09:25:36,590 - __main__ - INFO - Epoch 61: Train Loss = 0.8120, Val Loss = 0.8361, Pos Sim = 0.5149, Neg Sim = 0.1467
+2025-04-14 09:25:36,591 - __main__ - INFO - Learning rate: 0.00001478
+2025-04-14 09:28:41,822 - __main__ - INFO - Epoch 62: Train Loss = 0.8351, Val Loss = 0.8411, Pos Sim = 0.5010, Neg Sim = 0.1312
+2025-04-14 09:28:41,823 - __main__ - INFO - Learning rate: 0.00001471
+2025-04-14 09:31:42,213 - __main__ - INFO - Epoch 63: Train Loss = 0.8083, Val Loss = 0.7823, Pos Sim = 0.4977, Neg Sim = 0.1219
+2025-04-14 09:31:42,215 - __main__ - INFO - Learning rate: 0.00001462
+2025-04-14 09:34:37,357 - __main__ - INFO - Epoch 64: Train Loss = 0.8346, Val Loss = 0.8304, Pos Sim = 0.5140, Neg Sim = 0.1869
+2025-04-14 09:34:37,359 - __main__ - INFO - Learning rate: 0.00001452
+2025-04-14 09:37:41,651 - __main__ - INFO - Epoch 65: Train Loss = 0.7966, Val Loss = 0.8402, Pos Sim = 0.5221, Neg Sim = 0.1454
+2025-04-14 09:37:41,653 - __main__ - INFO - Learning rate: 0.00001441
+2025-04-14 09:40:45,638 - __main__ - INFO - Epoch 66: Train Loss = 0.7929, Val Loss = 0.8067, Pos Sim = 0.5252, Neg Sim = 0.1402
+2025-04-14 09:40:45,639 - __main__ - INFO - Learning rate: 0.00001429
+2025-04-14 09:43:47,013 - __main__ - INFO - Epoch 67: Train Loss = 0.8342, Val Loss = 0.8305, Pos Sim = 0.4870, Neg Sim = 0.1302
+2025-04-14 09:43:47,015 - __main__ - INFO - Learning rate: 0.00001416
+2025-04-14 09:46:50,209 - __main__ - INFO - Epoch 68: Train Loss = 0.8224, Val Loss = 0.8680, Pos Sim = 0.5219, Neg Sim = 0.1846
+2025-04-14 09:46:50,210 - __main__ - INFO - Learning rate: 0.00001402
+2025-04-14 09:49:50,029 - __main__ - INFO - Epoch 69: Train Loss = 0.8335, Val Loss = 0.7876, Pos Sim = 0.4930, Neg Sim = 0.1513
+2025-04-14 09:49:50,030 - __main__ - INFO - Learning rate: 0.00001387
+2025-04-14 09:52:50,506 - __main__ - INFO - Epoch 70: Train Loss = 0.8407, Val Loss = 0.8407, Pos Sim = 0.4523, Neg Sim = 0.1209
+2025-04-14 09:52:50,507 - __main__ - INFO - Learning rate: 0.00001370
+2025-04-14 09:55:45,789 - __main__ - INFO - Epoch 71: Train Loss = 0.8219, Val Loss = 0.8222, Pos Sim = 0.4650, Neg Sim = 0.1171
+2025-04-14 09:55:45,790 - __main__ - INFO - Learning rate: 0.00001354
+2025-04-14 09:58:45,832 - __main__ - INFO - Epoch 72: Train Loss = 0.8397, Val Loss = 0.8413, Pos Sim = 0.4668, Neg Sim = 0.1421
+2025-04-14 09:58:45,833 - __main__ - INFO - Learning rate: 0.00001336
+2025-04-14 10:01:43,060 - __main__ - INFO - Epoch 73: Train Loss = 0.7820, Val Loss = 0.7845, Pos Sim = 0.5243, Neg Sim = 0.1326
+2025-04-14 10:01:43,061 - __main__ - INFO - Learning rate: 0.00001317
+2025-04-14 10:04:40,108 - __main__ - INFO - Epoch 74: Train Loss = 0.8265, Val Loss = 0.8346, Pos Sim = 0.5421, Neg Sim = 0.1901
+2025-04-14 10:04:40,110 - __main__ - INFO - Learning rate: 0.00001298
+2025-04-14 10:07:49,272 - __main__ - INFO - Epoch 75: Train Loss = 0.8066, Val Loss = 0.8142, Pos Sim = 0.4991, Neg Sim = 0.1395
+2025-04-14 10:07:49,274 - __main__ - INFO - Learning rate: 0.00001278
+2025-04-14 10:10:52,209 - __main__ - INFO - Epoch 76: Train Loss = 0.7805, Val Loss = 0.8045, Pos Sim = 0.5116, Neg Sim = 0.1156
+2025-04-14 10:10:52,211 - __main__ - INFO - Learning rate: 0.00001257
+2025-04-14 10:13:55,951 - __main__ - INFO - Epoch 77: Train Loss = 0.7836, Val Loss = 0.8218, Pos Sim = 0.4856, Neg Sim = 0.0939
+2025-04-14 10:13:55,952 - __main__ - INFO - Learning rate: 0.00001236
+2025-04-14 10:17:00,802 - __main__ - INFO - Epoch 78: Train Loss = 0.7628, Val Loss = 0.7829, Pos Sim = 0.5199, Neg Sim = 0.1121
+2025-04-14 10:17:00,803 - __main__ - INFO - Learning rate: 0.00001214
+2025-04-14 10:17:01,642 - __main__ - INFO - Early stopping triggered after 78 epochs
+2025-04-14 10:17:01,643 - __main__ - INFO - Training completed successfully. Removing temporary checkpoint.
+2025-04-14 10:17:01,713 - __main__ - INFO - Removed temporary checkpoint: checkpoints/latest_checkpoint_GTN.pt
+2025-04-14 10:17:01,713 - __main__ - INFO - Final best model saved at: checkpoints/best_model_GTN.pt
+2025-04-14 10:17:01,713 - __main__ - INFO - Training completed!
