@@ -29,7 +29,7 @@ if root_logger.handlers:
 
 # Configure logger
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -84,11 +84,11 @@ def process_item(item):
         return []
     
 def create_graph_json_for_ecommerce():
-    # Ensure we have items with embeddings
+    # Only process items that have an item_embedding and either no generated_outfitgtn_embedding or a generated_outfitgtn_embedding that is False
     items_cursor = items_collection.find(
-        {"colorVariants.item_embedding": {"$exists": True}},
+        {"colorVariants.item_embedding": {"$exists": True}, "$or": [{"colorVariants.generated_outfitgtn_embedding": False}, {"colorVariants.generated_outfitgtn_embedding": {"$exists": False}}]}, 
         {"_id": 1, "colorVariants": 1}
-    ).limit(32)  # Increased from 32 to ensure we get some data
+    )
     
     items = list(items_cursor)
     logger.info(f"Found {len(items)} items with embeddings")
@@ -163,7 +163,7 @@ def main():
         "--training_graph_path", training_graph_path,
         "--ecomm_graph_path", ecomm_graph_path,
         "--output_path", output_path,
-        "--batch_size", "32",
+        "--batch_size", "128",
         "--num_similar", "3"
     ]
     
@@ -247,6 +247,12 @@ def main():
                 else:
                     embeddings_collection.insert_one(embedding_doc)
                     inserts += 1
+                
+                # Update the items collection to mark this color variant as processed
+                items_collection.update_one(
+                    {"_id": item_id, "colorVariants.color": color},
+                    {"$set": {"colorVariants.$.generated_outfitgtn_embedding": True}}
+                )
                 
             except Exception as e:
                 logger.error(f"Error processing embedding for {variant_id}: {e}")

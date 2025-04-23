@@ -288,22 +288,22 @@ def main():
     )
     logger.info(f"Saved {len(embeddings)} embeddings to {args.output_path}")
     
-    # Example of using the embeddings for similarity search
-    logger.info("\nExample similarity search:")
+    # # Example of using the embeddings for similarity search
+    # logger.debug("\nExample similarity search:")
     
-    # Choose a random item as query
-    query_idx = np.random.randint(len(ecomm_item_ids))
-    query_id = ecomm_item_ids[query_idx]
-    query_embedding = embeddings[query_id]
+    # # Choose a random item as query
+    # query_idx = np.random.randint(len(ecomm_item_ids))
+    # query_id = ecomm_item_ids[query_idx]
+    # query_embedding = embeddings[query_id]
     
-    # Find similar items
-    all_embeddings = np.array([embeddings[item_id] for item_id in ecomm_item_ids])
-    similar_indices, similarities = find_similar_catalog_items(query_embedding, all_embeddings, top_k=5)
+    # # Find similar items
+    # all_embeddings = np.array([embeddings[item_id] for item_id in ecomm_item_ids])
+    # similar_indices, similarities = find_similar_catalog_items(query_embedding, all_embeddings, top_k=5)
     
-    logger.info(f"Query item: {query_id}")
-    for i, idx in enumerate(similar_indices):
-        similar_id = ecomm_item_ids[idx]
-        logger.info(f"  Similar item {i+1}: {similar_id} (similarity: {similarities[i]:.4f})")
+    # logger.debug(f"Query item: {query_id}")
+    # for i, idx in enumerate(similar_indices):
+    #     similar_id = ecomm_item_ids[idx]
+    #     logger.debug(f"  Similar item {i+1}: {similar_id} (similarity: {similarities[i]:.4f})")
 
 if __name__ == "__main__":
     main() 

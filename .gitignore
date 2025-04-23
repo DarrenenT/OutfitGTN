@@ -10,6 +10,7 @@
 # *.log
 *.pyc
 *.pt
+*.npz
 /data_source/*.json
 /checkpoints
 
