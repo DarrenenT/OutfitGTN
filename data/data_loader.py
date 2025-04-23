@@ -190,7 +190,8 @@ class FashionDataLoader:
                         data_dir = "./data"  # Default data directory
                     
                     print(f"Checking for latest data in blob storage...")
-                    graph_path, dataset_path = ensure_latest_data(data_dir, self.force_update)
+                    graph_path,  = ensure_latest_data(data_dir, self.force_update, "graph")
+                    dataset_path = ensure_latest_data(data_dir, self.force_update, "dataset")
                     print(f"Using data files:")
                     print(f"  - Graph: {graph_path}")
                     print(f"  - Dataset: {dataset_path}")
