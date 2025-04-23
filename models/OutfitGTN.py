@@ -261,4 +261,39 @@ class OutfitGTN(nn.Module):
     def _get_offset(self, batched_data, batch_idx):
         """Get node offset for a specific batch index"""
         batch = batched_data.batch
-        return (batch == batch_idx).nonzero().min() 
+        return (batch == batch_idx).nonzero().min()
+
+    def batch_inference(self, data_list):
+        """
+        Process a batch of graphs efficiently for inference.
+        
+        Args:
+            data_list: List of PyG Data objects representing graphs
+            
+        Returns:
+            Tensor of embeddings for the root nodes of each graph
+        """
+        self.eval()
+        with torch.no_grad():
+            # Use PyG's built-in batching functionality
+            from torch_geometric.data import Batch
+            
+            # Batch the graphs
+            batch = Batch.from_data_list(data_list)
+            
+            # Process the entire batch at once
+            all_embeddings = self._process_single_graph(batch)
+            
+            # Extract root embeddings for all graphs at once
+            root_indices = []
+            node_offset = 0
+            for i, data in enumerate(data_list):
+                # Root node is always index 0 in each graph
+                root_indices.append(node_offset)
+                # Next graph starts after all nodes in this graph
+                node_offset += data.num_nodes
+                
+            # Get all root embeddings at once
+            root_embeddings = all_embeddings[root_indices]
+            
+            return root_embeddings

@@ -4,6 +4,7 @@ import torch
 import yaml
 import numpy as np
 import json
+from tqdm import tqdm
 import logging
 from pathlib import Path
 import sys
@@ -16,6 +17,7 @@ from torch_geometric.data import Data
 import argparse
 from dotenv import load_dotenv
 load_dotenv()
+
 
 def setup_logging():
     """Setup logging configuration"""
@@ -246,38 +248,53 @@ def main():
     # Process all e-commerce items
     embeddings = {}
     ecomm_item_ids = list(ecomm_nodes.keys())
-    logger.info(f"Processing {len(ecomm_item_ids)} e-commerce items")
     
-    for i, item_id in enumerate(ecomm_item_ids):
-        if i % 100 == 0:
-            logger.info(f"Processing item {i+1}/{len(ecomm_item_ids)}")
+    # Precompute all similarities at once for better performance
+    logger.info("Precomputing similarities between items and training set")
+    similarity_matrix = np.dot(training_feature_matrix, np.array([ecomm_nodes[item_id].embedding for item_id in ecomm_item_ids]).T)
+    # Normalize
+    training_norms = np.linalg.norm(training_feature_matrix, axis=1).reshape(-1, 1)
+    ecomm_norms = np.linalg.norm(np.array([ecomm_nodes[item_id].embedding for item_id in ecomm_item_ids]), axis=1)
+    similarity_matrix = similarity_matrix / (training_norms @ ecomm_norms.reshape(1, -1))
+    
+    logger.info(f"Processing {len(ecomm_item_ids)} e-commerce items in batches of {args.batch_size}")
+    
+    # Process items in batches 
+    for batch_start in tqdm(range(0, len(ecomm_item_ids), args.batch_size), desc="Processing batches"):
+        batch_end = min(batch_start + args.batch_size, len(ecomm_item_ids))
+        batch_ids = ecomm_item_ids[batch_start:batch_end]
+        
+        # Prepare all graphs for the batch in parallel
+        batch_graphs = []
+        
+        # Get similar items for all batch items at once using precomputed similarities
+        for i, item_id in enumerate(batch_ids):
+            # Get item features
+            item_embedding = ecomm_nodes[item_id].embedding
             
-        # Get item features
-        item_embedding = ecomm_nodes[item_id].embedding
-        logger.debug(f"Item {item_id} has embedding of shape {item_embedding.shape}")
+            # Get similar items from precomputed matrix
+            idx = ecomm_item_ids.index(item_id)
+            similar_indices = np.argsort(similarity_matrix[:, idx])[-args.num_similar:][::-1]
+            similar_items = [training_item_ids[idx] for idx in similar_indices]
+            
+            # Construct synthetic graph
+            item_graph = construct_synthetic_graph(item_id, item_embedding, similar_items, training_nodes)
+            batch_graphs.append(item_graph)
         
-        # Find similar items FROM THE TRAINING SET (important!)
-        logger.debug(f"Finding {args.num_similar} similar items for {item_id} from training set")
-        similarities = np.dot(training_feature_matrix, item_embedding) / (
-            np.linalg.norm(training_feature_matrix, axis=1) * np.linalg.norm(item_embedding)
-        )
-        similar_indices = np.argsort(similarities)[-args.num_similar:][::-1]
-        similar_items = [training_item_ids[idx] for idx in similar_indices]
-        logger.debug(f"Similar items for {item_id}: {similar_items}")
+        # Move all graphs to device together
+        batch_graphs = [graph.to(device) for graph in batch_graphs]
         
-        # Construct synthetic graph using training items and their outfit connections
-        logger.debug(f"Constructing synthetic graph for {item_id}")
-        item_graph = construct_synthetic_graph(item_id, item_embedding, similar_items, training_nodes)
-        logger.debug(f"Graph for {item_id} has {item_graph.num_nodes} nodes and {item_graph.num_edges} edges")
+        # Process the batch using model's batch processing method
+        batch_embeddings = model.batch_inference(batch_graphs).cpu().numpy()
         
-        # Compute embedding
-        logger.debug(f"Computing OutfitGTN embedding for {item_id}")
-        new_embedding = compute_item_embedding(model, item_graph, device)
-        logger.debug(f"Generated embedding of shape {new_embedding.shape} for {item_id}")
-        
-        # Store embedding
-        embeddings[item_id] = new_embedding
-        
+        # Store embeddings
+        for i, item_id in enumerate(batch_ids):
+            embeddings[item_id] = batch_embeddings[i]
+
+        # Clean up GPU memory periodically
+        if (batch_start // args.batch_size) % 10 == 0 and batch_start > 0:
+            torch.cuda.empty_cache()
+            
     # Save embeddings
     logger.info(f"Saving {len(embeddings)} embeddings to {args.output_path}")
     os.makedirs(os.path.dirname(args.output_path), exist_ok=True)

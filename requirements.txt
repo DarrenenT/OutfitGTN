@@ -15,4 +15,5 @@ tensorboard
 dotenv
 pymongo
 azure-storage-blob
+orjson
 

@@ -9,10 +9,10 @@
 
 # *.log
 *.pyc
-*.pt
-*.npz
 /data_source/*.json
-/checkpoints
+/checkpoints/*.json
+/checkpoints/*.pt
+/inference_results/*.npz
 
 # venv
 venv/

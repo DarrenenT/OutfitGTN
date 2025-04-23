@@ -171,7 +171,7 @@ def ensure_latest_data(data_dir, force_update=False, file_type=None):
     try:
         # Convert data_dir to Path object
         data_dir = Path(data_dir)
-        print(f"Ensuring latest {file_type} in {data_dir}")
+        logger.info(f"Ensuring latest {file_type} in {data_dir}")
         os.makedirs(data_dir, exist_ok=True)
         
         # Metadata file to track latest versions

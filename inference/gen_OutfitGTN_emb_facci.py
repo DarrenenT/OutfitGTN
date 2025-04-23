@@ -11,8 +11,11 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 import json
+import orjson
 import concurrent.futures
 import sys
+from bson.objectid import ObjectId
+from pymongo.operations import UpdateOne, InsertOne
 
 # Add the root directory to the path so we can use absolute imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -123,15 +126,15 @@ def create_graph_json_for_ecommerce():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     graph_path = os.path.join(data_source_dir, f"facci_graph_prod_{timestamp}.json")
     
-    with open(graph_path, "w") as f:
-        json.dump({"nodes": nodes}, f)
+    with open(graph_path, "wb") as f:  # Note: "wb" for binary mode
+        f.write(orjson.dumps({"nodes": nodes})) # orjson for faster json dumping
     
     logger.info(f"Saved graph to {graph_path}")
     return graph_path
 
 def main():
     # Create output directory
-    output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+    output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "inference_results")
     os.makedirs(output_dir, exist_ok=True)
     
     # Create graph file from MongoDB data
@@ -163,18 +166,12 @@ def main():
         "--training_graph_path", training_graph_path,
         "--ecomm_graph_path", ecomm_graph_path,
         "--output_path", output_path,
-        "--batch_size", "128",
+        "--batch_size", "256",
         "--num_similar", "3"
     ]
     
     logger.info(f"Running command: {' '.join(cmd)}")
-    process = subprocess.run(cmd, capture_output=True, text=True)
-    
-    # Log subprocess output
-    if process.stdout:
-        logger.info(f"Subprocess stdout: {process.stdout}")
-    if process.stderr:
-        logger.error(f"Subprocess stderr: {process.stderr}")
+    process = subprocess.run(cmd, capture_output=False, text=True)
         
     if process.returncode != 0:
         logger.error(f"Inference failed with return code {process.returncode}")
@@ -198,11 +195,12 @@ def main():
         # Create a dictionary mapping item_ids to embeddings
         embedding_dict = {str(item_id): embedding for item_id, embedding in zip(item_ids, embeddings)}
         
-        # Update embeddings collection instead of modifying items 
-        updates = 0
-        inserts = 0
+        # Prepare bulk operations
+        embedding_bulk_operations = []
+        items_bulk_operations = []
         
-        # First, let's parse the item IDs to extract original item ID and color
+        # First pass: parse IDs and create operation lists
+        variant_data = []
         for variant_id, embedding in embedding_dict.items():
             try:
                 # Parse the variant ID (format: "item_id_color")
@@ -214,53 +212,123 @@ def main():
                 item_id = parts[0]
                 color = '_'.join(parts[1:])  # Handle colors with underscores
                 
-                # Get item metadata
-                item = items_collection.find_one(
-                    {"_id": item_id, "colorVariants.color": color},
-                )
-                
-                if not item:
-                    logger.warning(f"Could not find item {item_id} with color {color}")
-                    continue
-                
-                # Check if an entry already exists
-                existing = embeddings_collection.find_one({
-                    "item_id": item_id,
-                    "color": color
+                # Add to our processing list
+                variant_data.append({
+                    'item_id': item_id,
+                    'color': color,
+                    'embedding': embedding
                 })
                 
-                # Prepare embedding document
-                embedding_doc = {
-                    "item_id": item_id,
-                    "color": color, 
-                    "outfitgtn_embedding": embedding.tolist(),
-                    "updatedAt": datetime.now()
-                }
+            except Exception as e:
+                logger.error(f"Error parsing variant ID {variant_id}: {e}")
+        
+        # Get all relevant items in one query to minimize DB hits
+        unique_item_ids = list(set(v['item_id'] for v in variant_data))
+        items_by_id = {}
+        
+        # Find all items in one query
+        items_cursor = items_collection.find(
+            {"_id": {"$in": [ObjectId(id) for id in unique_item_ids]}},
+            {"_id": 1, "colorVariants.color": 1}
+        )
+        
+        for item in items_cursor:
+            items_by_id[str(item['_id'])] = item
+        
+        # Find existing embeddings in one query
+        existing_embeddings = {}
+        existing_cursor = embeddings_collection.find(
+            {
+                "item_id": {"$in": unique_item_ids},
+                "color": {"$in": [v['color'] for v in variant_data]}
+            },
+            {"_id": 1, "item_id": 1, "color": 1}
+        )
+        
+        for emb in existing_cursor:
+            key = f"{emb['item_id']}_{emb['color']}"
+            existing_embeddings[key] = emb['_id']
+        
+        # Second pass: create bulk operations
+        updates = 0
+        inserts = 0
+        skipped = 0
+        
+        for variant in variant_data:
+            item_id = variant['item_id']
+            color = variant['color']
+            embedding = variant['embedding']
+            
+            # Skip if item not found
+            if item_id not in items_by_id:
+                logger.warning(f"Item {item_id} not found in database")
+                skipped += 1
+                continue
                 
-                # Insert or update
-                if existing:
-                    embeddings_collection.update_one(
-                        {"_id": existing["_id"]},
+            item = items_by_id[item_id]
+            
+            # Check if color variant exists
+            color_exists = any(cv.get('color') == color for cv in item.get('colorVariants', []))
+            if not color_exists:
+                logger.warning(f"Color {color} not found for item {item_id}")
+                skipped += 1
+                continue
+                
+            # Prepare embedding document
+            now = datetime.now()
+            embedding_doc = {
+                "item_id": item_id,
+                "color": color, 
+                "outfitgtn_embedding": embedding.tolist(),
+                "updatedAt": now
+            }
+            
+            # Check if entry exists and create appropriate operation
+            lookup_key = f"{item_id}_{color}"
+            if lookup_key in existing_embeddings:
+                # Update operation
+                embedding_bulk_operations.append(
+                    UpdateOne(
+                        {"_id": existing_embeddings[lookup_key]},
                         {"$set": embedding_doc}
                     )
-                    updates += 1
-                else:
-                    embeddings_collection.insert_one(embedding_doc)
-                    inserts += 1
-                
-                # Update the items collection to mark this color variant as processed
-                items_collection.update_one(
-                    {"_id": item_id, "colorVariants.color": color},
+                )
+                updates += 1
+            else:
+                # Insert operation
+                embedding_bulk_operations.append(
+                    InsertOne(embedding_doc)
+                )
+                inserts += 1
+            
+            # Add operation to update the items collection
+            items_bulk_operations.append(
+                UpdateOne(
+                    {"_id": ObjectId(item_id), "colorVariants.color": color},
                     {"$set": {"colorVariants.$.generated_outfitgtn_embedding": True}}
                 )
-                
-            except Exception as e:
-                logger.error(f"Error processing embedding for {variant_id}: {e}")
+            )
         
-        logger.info(f"Embeddings collection updated: {inserts} inserts, {updates} updates")
+        # Execute bulk operations in batches
+        if embedding_bulk_operations:
+            batch_size = 1000
+            for i in range(0, len(embedding_bulk_operations), batch_size):
+                batch = embedding_bulk_operations[i:i+batch_size]
+                embeddings_collection.bulk_write(batch)
+                
+        if items_bulk_operations:
+            batch_size = 1000
+            for i in range(0, len(items_bulk_operations), batch_size):
+                batch = items_bulk_operations[i:i+batch_size]
+                items_collection.bulk_write(batch)
+        
+        logger.info(f"Embeddings collection updated: {inserts} inserts, {updates} updates, {skipped} skipped")
         
     except Exception as e:
         logger.error(f"Error processing embeddings: {e}")
+        # Print full stack trace for easier debugging
+        import traceback
+        logger.error(traceback.format_exc())
 
 if __name__ == "__main__":
     main()
