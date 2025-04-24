@@ -16,4 +16,7 @@ dotenv
 pymongo
 azure-storage-blob
 orjson
+openai
+fastapi
+uvicorn
 

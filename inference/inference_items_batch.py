@@ -18,7 +18,6 @@ import argparse
 from dotenv import load_dotenv
 load_dotenv()
 
-
 def setup_logging():
     """Setup logging configuration"""
     # Clear any existing handlers to prevent duplicate logs
