@@ -31,8 +31,8 @@ def setup_logging():
 def create_openai_client():
     """Create a new OpenAI client instance"""
     return AzureOpenAI(
-        azure_endpoint = "https://facciopenai.openai.azure.com/", 
-        api_key = os.getenv('OPENAI_API_KEY'),  
+        azure_endpoint = os.getenv('AZURE_OPENAI_ENDPOINT'),
+        api_key = os.getenv('OPENAI_API_KEY'),
         api_version = "2025-01-01-preview"
     )
 

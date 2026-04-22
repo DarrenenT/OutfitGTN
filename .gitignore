@@ -20,3 +20,8 @@ venv/
 .env
 
 
+
+# training artifacts
+logs/
+!logs/.gitkeep
+checkpoints/
